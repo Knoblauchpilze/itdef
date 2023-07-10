@@ -1,0 +1,16 @@
+
+# https://github.com/github/gitignore/blob/main/Unity.gitignore
+.vscode
+
+Assets/
+Build/
+Library/
+Logs/
+obj/
+Temp/
+UserSettings/
+
+*.csproj
+*.sln
+
+
