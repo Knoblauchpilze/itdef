@@ -62,6 +62,7 @@ public struct PortalConfiguration
 public class Portal : MonoBehaviour
 {
   private Vector3 spawnCenter;
+  private bool spawnInvoked = false;
 
   public GameObject enemyPrefab;
   public GameObject baseToDestroy;
@@ -73,29 +74,38 @@ public class Portal : MonoBehaviour
     var boxCollider = GetComponent<BoxCollider>();
     spawnCenter = boxCollider.transform.position;
 
-    baseToDestroy = GameObject.Find("base");
-
-    // TODO: Using this hard-coded value as the Start is called before the
-    // GameManager initializes it. Should be set to:
-    // config.spawnIntervalInSeconds
-    // instead.
-    InvokeRepeating("spawnEnemyWave", 0.0f, 2.0f);
+    baseToDestroy = GameObject.Find("Base");
   }
 
   // Update is called once per frame
   void Update()
   {
-
+    if (GameStateData.state == State.Play && !spawnInvoked)
+    {
+      spawnInvoked = true;
+      Invoke("spawnEnemyWave", config.spawnIntervalInSeconds);
+    }
+    if (GameStateData.state == State.Paused)
+    {
+      spawnInvoked = false;
+    }
   }
 
   void spawnEnemyWave()
   {
+    if (GameStateData.state != State.Play)
+    {
+      return;
+    }
+
     var waveSize = config.waveConf.getWaveSize();
 
     for (var id = 0; id < waveSize; ++id)
     {
       spawnEnemy();
     }
+
+    Invoke("spawnEnemyWave", config.spawnIntervalInSeconds);
   }
 
   void spawnEnemy()

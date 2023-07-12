@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 497840019}
   - component: {fileID: 497840018}
   m_Layer: 5
-  m_Name: title
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,8 +431,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281975029
-  m_fontColor: {r: 0.9622642, g: 0.75435346, b: 0.22241013, a: 1}
+    rgba: 4281251033
+  m_fontColor: {r: 0.8509804, g: 0.7058824, b: 0.18039216, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1002,6 +1002,7 @@ GameObject:
   - component: {fileID: 1031756340}
   - component: {fileID: 1031756339}
   - component: {fileID: 1031756338}
+  - component: {fileID: 1031756341}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -1074,13 +1075,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1031756341}
+        m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1124,6 +1125,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031756336}
   m_CullTransparentMesh: 1
+--- !u!114 &1031756341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031756336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25dd469bfea1156708f5cc45291568ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1076471052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,7 +1555,7 @@ GameObject:
   - component: {fileID: 1397857177}
   - component: {fileID: 1397857176}
   m_Layer: 5
-  m_Name: canvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1915,7 +1928,7 @@ GameObject:
   - component: {fileID: 2127288482}
   - component: {fileID: 2127288481}
   m_Layer: 0
-  m_Name: camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

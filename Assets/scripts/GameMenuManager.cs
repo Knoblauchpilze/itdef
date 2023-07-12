@@ -35,6 +35,8 @@ public class GameMenuManager : MonoBehaviour
   public void SetupGameScreen(Difficulty difficulty)
   {
     GameStateData.difficulty = difficulty;
+    GameStateData.state = State.Paused;
+
     SceneManager.LoadScene("level");
   }
 }
