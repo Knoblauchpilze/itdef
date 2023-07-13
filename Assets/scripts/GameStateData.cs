@@ -18,7 +18,7 @@ public static class GameStateData
   public static Difficulty difficulty;
   public static State state;
 
-  public static int livesFromDifficulty()
+  public static int LivesFromDifficulty()
   {
     switch (GameStateData.difficulty)
     {
@@ -33,7 +33,7 @@ public static class GameStateData
     }
   }
 
-  public static int goldFromDifficulty()
+  public static int GoldFromDifficulty()
   {
     switch (GameStateData.difficulty)
     {

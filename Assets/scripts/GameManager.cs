@@ -24,16 +24,16 @@ public class GameManager : MonoBehaviour
     Debug.Log("Difficulty: " + GameStateData.difficulty);
     foreach (GameObject portal in portals)
     {
-      configurePortal(portal, GameStateData.difficulty);
+      ConfigurePortal(portal, GameStateData.difficulty);
     }
 
-    lives = GameStateData.livesFromDifficulty();
-    gold = GameStateData.goldFromDifficulty();
+    lives = GameStateData.LivesFromDifficulty();
+    gold = GameStateData.GoldFromDifficulty();
 
     gameScreen.gameObject.SetActive(true);
     gameOverScreen.gameObject.SetActive(false);
 
-    updateUi();
+    UpdateUi();
   }
 
   // Update is called once per frame
@@ -41,29 +41,29 @@ public class GameManager : MonoBehaviour
   {
   }
 
-  void configurePortal(GameObject portal, Difficulty difficulty)
+  void ConfigurePortal(GameObject portal, Difficulty difficulty)
   {
     var script = portal.GetComponent<Portal>();
-    script.config = generatePortalConfiguration(difficulty);
+    script.Configure(GeneratePortalConfiguration(difficulty));
   }
 
-  PortalConfiguration generatePortalConfiguration(Difficulty difficulty)
+  PortalConfiguration GeneratePortalConfiguration(Difficulty difficulty)
   {
     var conf = new PortalConfiguration();
-    conf.waveConf = generateWaveConfiguration(difficulty);
+    conf.waveConf = GenerateWaveConfiguration(difficulty);
 
     conf.spawnIntervalInSeconds = 2.0f;
-    conf.destroyOnArrivalGracePeriod = 1.0f;
+    conf.destroyOnArrivalGracePeriod = 2.0f;
     conf.minSpawnDistance = 0.5f;
     conf.spawnRadius = 2.2f;
 
     return conf;
   }
 
-  WaveConfiguration generateWaveConfiguration(Difficulty difficulty)
+  WaveConfiguration GenerateWaveConfiguration(Difficulty difficulty)
   {
     var conf = new WaveConfiguration();
-    conf.enemyConf = generateEnemyConfiguration(difficulty);
+    conf.enemyConf = GenerateEnemyConfiguration(difficulty);
 
     conf.minCount = 1;
     conf.maxCount = 1;
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     return conf;
   }
 
-  EnemyConfiguration generateEnemyConfiguration(Difficulty difficulty)
+  EnemyConfiguration GenerateEnemyConfiguration(Difficulty difficulty)
   {
     var conf = new EnemyConfiguration();
     conf.minHealth = 1;
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
     return conf;
   }
 
-  void updateUi()
+  void UpdateUi()
   {
     livesText.SetText("Lives: " + lives);
     goldText.SetText("Gold: " + gold);
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
   public void EnemyPassedThroughBase()
   {
     --lives;
-    updateUi();
+    UpdateUi();
 
     if (lives <= 0)
     {
