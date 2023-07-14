@@ -9,9 +9,11 @@ public class GameManager : MonoBehaviour
 {
   private int lives;
   private int gold;
+  private List<Portal> portals;
 
   public TextMeshProUGUI livesText;
   public TextMeshProUGUI goldText;
+  public TextMeshProUGUI waveTimerText;
   public TextMeshProUGUI stateButtonText;
 
   public GameObject gameScreen;
@@ -20,12 +22,7 @@ public class GameManager : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    var portals = GameObject.FindGameObjectsWithTag("portal");
-    Debug.Log("Difficulty: " + GameStateData.difficulty);
-    foreach (GameObject portal in portals)
-    {
-      ConfigurePortal(portal, GameStateData.difficulty);
-    }
+    GetAndConfigurePortals();
 
     lives = GameStateData.LivesFromDifficulty();
     gold = GameStateData.GoldFromDifficulty();
@@ -39,12 +36,31 @@ public class GameManager : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    var minRemainingTime = float.MaxValue;
+    foreach (Portal portal in portals)
+    {
+      var remainingTimeInSeconds = portal.TimeToNextWave();
+      if (remainingTimeInSeconds < minRemainingTime)
+      {
+        minRemainingTime = remainingTimeInSeconds;
+      }
+    }
+
+    var secondsRemaining = Mathf.FloorToInt(minRemainingTime);
+    waveTimerText.SetText("Time: " + secondsRemaining + "s");
   }
 
-  void ConfigurePortal(GameObject portal, Difficulty difficulty)
+  void GetAndConfigurePortals()
   {
-    var script = portal.GetComponent<Portal>();
-    script.Configure(GeneratePortalConfiguration(difficulty));
+    portals = new List<Portal>();
+
+    var rawPortals = GameObject.FindGameObjectsWithTag("portal");
+    foreach (GameObject rawPortal in rawPortals)
+    {
+      var portal = rawPortal.GetComponent<Portal>();
+      portal.Configure(GeneratePortalConfiguration(GameStateData.difficulty));
+      portals.Add(portal);
+    }
   }
 
   PortalConfiguration GeneratePortalConfiguration(Difficulty difficulty)
@@ -125,5 +141,13 @@ public class GameManager : MonoBehaviour
   public void SetupTitleMenuScreen()
   {
     SceneManager.LoadScene("main_menu");
+  }
+
+  public void TriggerNextWave()
+  {
+    foreach (Portal portal in portals)
+    {
+      portal.SpawnEnemyWave();
+    }
   }
 }

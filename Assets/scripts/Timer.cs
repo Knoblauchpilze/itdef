@@ -1,4 +1,6 @@
 
+using System;
+
 public class Timer
 {
 
@@ -19,6 +21,11 @@ public class Timer
   public bool Ready()
   {
     return accumulated >= threshold;
+  }
+
+  public float Remaining()
+  {
+    return Math.Max(0.0f, threshold - accumulated);
   }
 
   public void Reset()

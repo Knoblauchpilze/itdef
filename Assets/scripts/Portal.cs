@@ -8,9 +8,9 @@ public class Portal : MonoBehaviour
   private Timer waveTimer;
   private PortalConfiguration config;
 
-
   public GameObject enemyPrefab;
   public GameObject baseToDestroy;
+
   // Start is called before the first frame update
   void Start()
   {
@@ -33,7 +33,6 @@ public class Portal : MonoBehaviour
     if (ready)
     {
       SpawnEnemyWave();
-      waveTimer.Reset();
     }
   }
 
@@ -43,7 +42,7 @@ public class Portal : MonoBehaviour
     waveTimer = new Timer(config.spawnIntervalInSeconds);
   }
 
-  void SpawnEnemyWave()
+  public void SpawnEnemyWave()
   {
     var waveSize = config.waveConf.GetWaveSize();
 
@@ -51,6 +50,8 @@ public class Portal : MonoBehaviour
     {
       SpawnEnemy();
     }
+
+    waveTimer.Reset();
   }
 
   void SpawnEnemy()
@@ -73,5 +74,10 @@ public class Portal : MonoBehaviour
     motionConf.destroyOnArrivalGracePeriod = config.destroyOnArrivalGracePeriod;
 
     behavior.Configure(motionConf);
+  }
+
+  public float TimeToNextWave()
+  {
+    return waveTimer.Remaining();
   }
 }
