@@ -631,7 +631,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 531856748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce864698efdb8ecdf9e8389bb9a069f9, type: 3}
+  m_Script: {fileID: 11500000, guid: ed94ce8fd844a1521bafbaeae07fa891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 0
@@ -940,7 +940,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 806440719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce864698efdb8ecdf9e8389bb9a069f9, type: 3}
+  m_Script: {fileID: 11500000, guid: ed94ce8fd844a1521bafbaeae07fa891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 1
@@ -970,7 +970,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 869624005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73f1fadcf178dd6e5afeaa7ab09143b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3147ef64d66ff2dc3a6b6c2af0871f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   titleScreen: {fileID: 712301932}
@@ -1134,7 +1134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1031756336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25dd469bfea1156708f5cc45291568ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 85fe2b38f8deb74738fe4f584fa488bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1076471052
@@ -1912,7 +1912,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1539365331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce864698efdb8ecdf9e8389bb9a069f9, type: 3}
+  m_Script: {fileID: 11500000, guid: ed94ce8fd844a1521bafbaeae07fa891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 2
