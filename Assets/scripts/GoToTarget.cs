@@ -12,7 +12,7 @@ public class GoToTarget : MonoBehaviour
   private bool hasTarget = false;
   private Vector3 currentTarget;
 
-  private float ARRIVAL_THRESHOLD = 0.001f;
+  private float ARRIVAL_THRESHOLD = 0.005f;
 
   // Start is called before the first frame update
   void Start()
@@ -32,8 +32,9 @@ public class GoToTarget : MonoBehaviour
     UpdateTarget();
 
     var dir = currentTarget - gameObject.transform.position;
+    var d = dir.magnitude;
     dir.Normalize();
-    var delta = config.speed * Time.deltaTime;
+    var delta = Mathf.Min(config.speed * Time.deltaTime, d);
 
     transform.Translate(delta * dir);
 
