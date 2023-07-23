@@ -7,6 +7,11 @@ public class Path
   // https://stackoverflow.com/questions/18895727/c-vector-like-class-in-c-sharp
   private List<Vector2Int> points = new List<Vector2Int>();
 
+  public Path()
+  {
+    // Empty path.
+  }
+
   public Path(Vector2Int start)
   {
     Add(start, false);

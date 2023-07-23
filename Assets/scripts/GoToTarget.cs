@@ -8,7 +8,7 @@ public class GoToTarget : MonoBehaviour
   private MotionConfiguration config;
   private bool reachedBase;
   private Timer destroyTimer;
-  private Path path;
+  private Path path = new Path();
   private bool hasTarget = false;
   private Vector3 currentTarget;
 
@@ -29,10 +29,7 @@ public class GoToTarget : MonoBehaviour
       return;
     }
 
-    if (!reachedBase)
-    {
-      UpdateTarget();
-    }
+    UpdateTarget();
 
     var dir = currentTarget - gameObject.transform.position;
     dir.Normalize();
@@ -69,16 +66,6 @@ public class GoToTarget : MonoBehaviour
     Destroy(gameObject);
   }
 
-  void GeneratePath()
-  {
-    var start = GetCurrentPosition();
-    var end = VectorUtils.ConvertTo2d(config.target.transform.position);
-
-    AStar astar = new AStar(start, end, config.locator);
-    path = astar.FindUnboundedPath();
-    Debug.Log("Generated path with size " + path.Size());
-  }
-
   Vector2Int GetCurrentPosition()
   {
     return VectorUtils.ConvertTo2d(gameObject.transform.position);
@@ -86,23 +73,54 @@ public class GoToTarget : MonoBehaviour
 
   void UpdateTarget()
   {
-    if (hasTarget)
+    if (hasTarget && !CurrentTargetIsReached())
     {
-      var currentTarget2d = VectorUtils.ConvertTo2dFloat(currentTarget);
-      var pos2d = VectorUtils.ConvertTo2dFloat(gameObject.transform.position);
-      var d = Vector2.Distance(currentTarget2d, pos2d);
-      if (d > ARRIVAL_THRESHOLD)
-      {
-        return;
-      }
-
-      Debug.Log("Arrived within " + d + " of " + currentTarget + " (pos: " + gameObject.transform.position + ", 2d: " + pos2d + "), moving to next target");
+      return;
     }
 
-    if (path == null || path.Empty())
+    if (path.Empty())
     {
       GeneratePath();
     }
+
+    MoveToNextTargetOnPath();
+  }
+
+  bool CurrentTargetIsReached()
+  {
+    var currentTarget2d = VectorUtils.ConvertTo2dFloat(currentTarget);
+    var pos2d = VectorUtils.ConvertTo2dFloat(gameObject.transform.position);
+    var d = Vector2.Distance(currentTarget2d, pos2d);
+    return d <= ARRIVAL_THRESHOLD;
+  }
+
+  void GeneratePath()
+  {
+    if (reachedBase)
+    {
+      return;
+    }
+
+    var start = GetCurrentPosition();
+    var end = VectorUtils.ConvertTo2d(config.target.transform.position);
+
+    AStar astar = new AStar(start, end, config.locator);
+    path = astar.FindUnboundedPath();
+    Debug.Log("Generated path with size " + path.Size());
+    for (int i = 0; i < path.Size(); ++i)
+    {
+      Debug.Log("Point " + i + " is: " + path.At(i));
+    }
+  }
+
+  void MoveToNextTargetOnPath()
+  {
+    if (path.Empty())
+    {
+      return;
+    }
+
+    Debug.Log("Arrived within " + ARRIVAL_THRESHOLD + " of " + currentTarget + " (pos: " + gameObject.transform.position + "), moving to next target");
 
     var target = path.Advance();
     currentTarget = VectorUtils.ConvertTo3d(target, config.target.transform.position.z);
