@@ -20,4 +20,9 @@ public class GameMap : Locator
       portals.Add(portal);
     }
   }
+
+  public void AddWall(Vector2Int pos)
+  {
+    usedCoordinates.Add(Node.Hash(pos));
+  }
 }

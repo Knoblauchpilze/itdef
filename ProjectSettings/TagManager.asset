@@ -8,6 +8,7 @@ TagManager:
   - base
   - portal
   - enemy
+  - wall
   layers:
   - Default
   - TransparentFX

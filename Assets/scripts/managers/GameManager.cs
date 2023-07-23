@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
   void Start()
   {
     GetAndConfigurePortals();
+    GetAndConfigureWalls();
 
     lives = GameStateData.LivesFromDifficulty();
     gold = GameStateData.GoldFromDifficulty();
@@ -63,6 +64,15 @@ public class GameManager : MonoBehaviour
 
       portals.Add(portal);
       gameMap.AddPortal(portal, VectorUtils.ConvertTo2d(rawPortal.gameObject.transform.position));
+    }
+  }
+
+  void GetAndConfigureWalls()
+  {
+    var rawWalls = GameObject.FindGameObjectsWithTag("wall");
+    foreach (GameObject rawWall in rawWalls)
+    {
+      gameMap.AddWall(VectorUtils.ConvertTo2d(rawWall.gameObject.transform.position));
     }
   }
 
