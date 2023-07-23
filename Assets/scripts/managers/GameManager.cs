@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
   private int lives;
   private int gold;
   private List<Portal> portals;
+  private GameMap gameMap = new GameMap();
 
   public TextMeshProUGUI livesText;
   public TextMeshProUGUI goldText;
@@ -59,7 +60,9 @@ public class GameManager : MonoBehaviour
     {
       var portal = rawPortal.GetComponent<Portal>();
       portal.Configure(GeneratePortalConfiguration(GameStateData.difficulty));
+
       portals.Add(portal);
+      gameMap.AddPortal(portal, VectorUtils.ConvertTo2d(rawPortal.gameObject.transform.position));
     }
   }
 
@@ -68,10 +71,10 @@ public class GameManager : MonoBehaviour
     var conf = new PortalConfiguration();
     conf.waveConf = GenerateWaveConfiguration(difficulty);
 
-    conf.spawnIntervalInSeconds = 2.0f;
+    conf.spawnIntervalInSeconds = 20.0f;
     conf.destroyOnArrivalGracePeriod = 2.0f;
-    conf.minSpawnDistance = 0.5f;
-    conf.spawnRadius = 2.2f;
+
+    conf.locator = gameMap;
 
     return conf;
   }

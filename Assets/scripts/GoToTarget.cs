@@ -8,6 +8,11 @@ public class GoToTarget : MonoBehaviour
   private MotionConfiguration config;
   private bool reachedBase;
   private Timer destroyTimer;
+  private Path path;
+  private bool hasTarget = false;
+  private Vector3 currentTarget;
+
+  private float ARRIVAL_THRESHOLD = 0.001f;
 
   // Start is called before the first frame update
   void Start()
@@ -24,7 +29,12 @@ public class GoToTarget : MonoBehaviour
       return;
     }
 
-    var dir = config.target.transform.position - transform.position;
+    if (!reachedBase)
+    {
+      UpdateTarget();
+    }
+
+    var dir = currentTarget - gameObject.transform.position;
     dir.Normalize();
     var delta = config.speed * Time.deltaTime;
 
@@ -57,5 +67,47 @@ public class GoToTarget : MonoBehaviour
   {
     gameManager.EnemyPassedThroughBase();
     Destroy(gameObject);
+  }
+
+  void GeneratePath()
+  {
+    var start = GetCurrentPosition();
+    var end = VectorUtils.ConvertTo2d(config.target.transform.position);
+
+    AStar astar = new AStar(start, end, config.locator);
+    path = astar.FindUnboundedPath();
+    Debug.Log("Generated path with size " + path.Size());
+  }
+
+  Vector2Int GetCurrentPosition()
+  {
+    return VectorUtils.ConvertTo2d(gameObject.transform.position);
+  }
+
+  void UpdateTarget()
+  {
+    if (hasTarget)
+    {
+      var currentTarget2d = VectorUtils.ConvertTo2dFloat(currentTarget);
+      var pos2d = VectorUtils.ConvertTo2dFloat(gameObject.transform.position);
+      var d = Vector2.Distance(currentTarget2d, pos2d);
+      if (d > ARRIVAL_THRESHOLD)
+      {
+        return;
+      }
+
+      Debug.Log("Arrived within " + d + " of " + currentTarget + " (pos: " + gameObject.transform.position + ", 2d: " + pos2d + "), moving to next target");
+    }
+
+    if (path == null || path.Empty())
+    {
+      GeneratePath();
+    }
+
+    var target = path.Advance();
+    currentTarget = VectorUtils.ConvertTo3d(target, config.target.transform.position.z);
+    hasTarget = true;
+
+    Debug.Log("Picked next target " + currentTarget);
   }
 }

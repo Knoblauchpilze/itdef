@@ -61,7 +61,6 @@ public class Portal : MonoBehaviour
 
     var enemy = Instantiate(enemyPrefab, pos, enemyPrefab.transform.rotation);
     ConfigureEnemy(enemy);
-
   }
 
   void ConfigureEnemy(GameObject enemy)
@@ -72,6 +71,7 @@ public class Portal : MonoBehaviour
     motionConf.target = baseToDestroy;
     motionConf.speed = config.waveConf.enemyConf.GetEnemySpeed();
     motionConf.destroyOnArrivalGracePeriod = config.destroyOnArrivalGracePeriod;
+    motionConf.locator = config.locator;
 
     behavior.Configure(motionConf);
   }
