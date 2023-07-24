@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Portal : MonoBehaviour
+public class Portal : MonoBehaviour, IPointerDownHandler
 {
   private Vector3 spawnCenter;
   private Timer waveTimer;
@@ -34,6 +35,12 @@ public class Portal : MonoBehaviour
     {
       SpawnEnemyWave();
     }
+  }
+
+  public void OnPointerDown(PointerEventData eventData)
+  {
+    // https://discussions.unity.com/t/mouse-cursor-position-relative-to-the-object/144907
+    Debug.Log("event: " + eventData.button + " at " + eventData.pointerCurrentRaycast.worldPosition);
   }
 
   public void Configure(PortalConfiguration inConfig)
@@ -70,10 +77,16 @@ public class Portal : MonoBehaviour
     var motionConf = new MotionConfiguration();
     motionConf.target = baseToDestroy;
     motionConf.speed = config.waveConf.enemyConf.GetEnemySpeed();
-    motionConf.destroyOnArrivalGracePeriod = config.destroyOnArrivalGracePeriod;
     motionConf.locator = config.locator;
 
     behavior.Configure(motionConf);
+
+    Threat threat = enemy.GetComponent<Threat>();
+
+    var threatConf = new ThreatConfiguration();
+    threatConf.destroyOnArrivalGracePeriod = config.destroyOnArrivalGracePeriod;
+
+    threat.Configure(threatConf);
   }
 
   public float TimeToNextWave()

@@ -7,6 +7,7 @@ public class GameMap : Locator
 {
   private List<Portal> portals = new List<Portal>();
   private HashSet<string> usedCoordinates = new HashSet<string>();
+  private List<GoToTarget> movingElements = new List<GoToTarget>();
 
   public bool Obstructed(Vector2Int pos)
   {
@@ -24,5 +25,18 @@ public class GameMap : Locator
   public void AddWall(Vector2Int pos)
   {
     usedCoordinates.Add(Node.Hash(pos));
+  }
+
+  public void AddMobile(GoToTarget mobile)
+  {
+    movingElements.Add(mobile);
+  }
+
+  public void InvalidatePaths()
+  {
+    foreach (GoToTarget mobile in movingElements)
+    {
+      mobile.InvalidatePath();
+    }
   }
 }

@@ -17,13 +17,11 @@ public class DifficultyButton : MonoBehaviour
     gameMenuManager = GameObject.Find("GameMenuManager").GetComponent<GameMenuManager>();
 
     button.onClick.AddListener(SetDifficulty);
-
   }
 
   // Update is called once per frame
   void Update()
   {
-
   }
 
   void SetDifficulty()

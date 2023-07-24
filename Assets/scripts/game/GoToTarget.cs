@@ -7,9 +7,8 @@ public class GoToTarget : MonoBehaviour
   private GameManager gameManager;
   private MotionConfiguration config;
   private bool reachedBase;
-  private Timer destroyTimer;
+  private Threat threat;
   private Path path = new Path();
-  private bool hasTarget = false;
   private Vector3 currentTarget;
 
   private float ARRIVAL_THRESHOLD = 0.005f;
@@ -19,6 +18,7 @@ public class GoToTarget : MonoBehaviour
   {
     reachedBase = false;
     gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    threat = gameObject.GetComponent<Threat>();
   }
 
   // Update is called once per frame
@@ -37,14 +37,6 @@ public class GoToTarget : MonoBehaviour
     var delta = Mathf.Min(config.speed * Time.deltaTime, d);
 
     transform.Translate(delta * dir);
-
-    if (reachedBase)
-    {
-      if (destroyTimer.Accumulate(Time.deltaTime))
-      {
-        DestroyAfterGracePeriod();
-      }
-    }
   }
 
   void OnTriggerEnter(Collider other)
@@ -52,7 +44,7 @@ public class GoToTarget : MonoBehaviour
     if (other.gameObject == config.target)
     {
       reachedBase = true;
-      destroyTimer = new Timer(config.destroyOnArrivalGracePeriod);
+      threat.ReachedBase();
     }
   }
 
@@ -61,10 +53,9 @@ public class GoToTarget : MonoBehaviour
     config = inConfig;
   }
 
-  void DestroyAfterGracePeriod()
+  public void InvalidatePath()
   {
-    gameManager.EnemyPassedThroughBase();
-    Destroy(gameObject);
+    path.Clear();
   }
 
   Vector2Int GetCurrentPosition()
@@ -74,7 +65,7 @@ public class GoToTarget : MonoBehaviour
 
   void UpdateTarget()
   {
-    if (hasTarget && !CurrentTargetIsReached())
+    if (!path.Empty() && !CurrentTargetIsReached())
     {
       return;
     }
@@ -125,7 +116,6 @@ public class GoToTarget : MonoBehaviour
 
     var target = path.Advance();
     currentTarget = VectorUtils.ConvertTo3d(target, config.target.transform.position.z);
-    hasTarget = true;
 
     Debug.Log("Picked next target " + currentTarget);
   }

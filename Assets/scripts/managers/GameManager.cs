@@ -1,19 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
   private int lives;
-  private int gold;
   private List<Portal> portals;
   private GameMap gameMap = new GameMap();
 
   public TextMeshProUGUI livesText;
-  public TextMeshProUGUI goldText;
   public TextMeshProUGUI waveTimerText;
   public TextMeshProUGUI stateButtonText;
 
@@ -27,7 +23,6 @@ public class GameManager : MonoBehaviour
     GetAndConfigureWalls();
 
     lives = GameStateData.LivesFromDifficulty();
-    gold = GameStateData.GoldFromDifficulty();
 
     gameScreen.gameObject.SetActive(true);
     gameOverScreen.gameObject.SetActive(false);
@@ -115,7 +110,6 @@ public class GameManager : MonoBehaviour
   void UpdateUi()
   {
     livesText.SetText("Lives: " + lives);
-    goldText.SetText("Gold: " + gold);
   }
 
   public void EnemyPassedThroughBase()
@@ -162,5 +156,10 @@ public class GameManager : MonoBehaviour
     {
       portal.SpawnEnemyWave();
     }
+  }
+
+  public void SpawnBuilding(Building building, Vector2Int pos)
+  {
+    gameMap.InvalidatePaths();
   }
 }
