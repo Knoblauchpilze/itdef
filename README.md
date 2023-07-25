@@ -17,4 +17,4 @@ Incrementally create a top down open world tower defense by adding features litt
 * ✅ mobs are following a path following the grid
 * ✅ the player loses when no lives are left
 * the player earns money when killing a mob
-* placing walls and towers cost money
+* ✅ placing walls and towers cost money

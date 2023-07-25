@@ -24,10 +24,33 @@ public class BuildManager : MonoBehaviour
 
   public void SpawnBuildingRequest(Vector2Int pos, float groundLevel)
   {
-    if (hasBuilding)
+    if (hasBuilding && CanAfford())
     {
-      mapManager.SpawnBuilding(buildingToBuild, buildingPrefab, pos, groundLevel);
+      SpawnBuildingAndPay(pos, groundLevel);
     }
+  }
+
+  bool CanAfford()
+  {
+    if (!hasBuilding)
+    {
+      return false;
+    }
+
+    var cost = BuildingCost.Get(buildingToBuild);
+    return cost <= gold;
+  }
+
+  void SpawnBuildingAndPay(Vector2Int pos, float groundLevel)
+  {
+    var spawned = mapManager.SpawnBuilding(buildingToBuild, buildingPrefab, pos, groundLevel);
+    if (!spawned)
+    {
+      return;
+    }
+
+    gold -= BuildingCost.Get(buildingToBuild);
+    UpdateUi();
   }
 
   public void SetBuildingToBuild(Building type, GameObject prefab)

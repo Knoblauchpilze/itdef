@@ -37,11 +37,11 @@ public class MapManager : MonoBehaviour
     }
   }
 
-  public void SpawnBuilding(Building type, GameObject prefab, Vector2Int pos, float groundLevel)
+  public bool SpawnBuilding(Building type, GameObject prefab, Vector2Int pos, float groundLevel)
   {
     if (gameMap.Obstructed(pos))
     {
-      return;
+      return false;
     }
 
     switch (type)
@@ -57,6 +57,8 @@ public class MapManager : MonoBehaviour
     Instantiate(prefab, pos3d, prefab.transform.rotation);
 
     gameMap.InvalidatePaths();
+
+    return true;
   }
 
   public Router GetRouter()
