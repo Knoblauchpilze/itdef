@@ -60,7 +60,7 @@ public class GoToTarget : MonoBehaviour
 
   Vector2Int GetCurrentPosition()
   {
-    return VectorUtils.ConvertTo2d(gameObject.transform.position);
+    return VectorUtils.ConvertTo2dIntTile(gameObject.transform.position);
   }
 
   void UpdateTarget()
@@ -73,6 +73,15 @@ public class GoToTarget : MonoBehaviour
     if (path.Empty())
     {
       GeneratePath();
+      if (!path.Empty())
+      {
+        var next = path.Peek();
+        var pos = GetCurrentPosition();
+        if (pos == next)
+        {
+          path.Advance();
+        }
+      }
     }
 
     MoveToNextTargetOnPath();
@@ -94,15 +103,11 @@ public class GoToTarget : MonoBehaviour
     }
 
     var start = GetCurrentPosition();
-    var end = VectorUtils.ConvertTo2d(config.target.transform.position);
+    var end = VectorUtils.ConvertTo2dIntTile(config.target.transform.position);
 
     AStar astar = new AStar(start, end, config.locator);
     path = astar.FindUnboundedPath();
     Debug.Log("Generated path with size " + path.Size());
-    for (int i = 0; i < path.Size(); ++i)
-    {
-      Debug.Log("Point " + i + " is: " + path.At(i));
-    }
   }
 
   void MoveToNextTargetOnPath()
@@ -115,7 +120,7 @@ public class GoToTarget : MonoBehaviour
     Debug.Log("Arrived within " + ARRIVAL_THRESHOLD + " of " + currentTarget + " (pos: " + gameObject.transform.position + "), moving to next target");
 
     var target = path.Advance();
-    currentTarget = VectorUtils.ConvertTo3d(target, config.target.transform.position.z);
+    currentTarget = VectorUtils.ConvertTo3dFloat(target, config.target.transform.position.z);
 
     Debug.Log("Picked next target " + currentTarget);
   }

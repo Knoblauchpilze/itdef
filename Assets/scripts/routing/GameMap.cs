@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // https://www.w3schools.com/cs/cs_interface.php
-public class GameMap : Locator
+public class GameMap : Router
 {
   private List<Portal> portals = new List<Portal>();
   private HashSet<string> usedCoordinates = new HashSet<string>();
@@ -27,7 +27,7 @@ public class GameMap : Locator
     usedCoordinates.Add(Node.Hash(pos));
   }
 
-  public void AddMobile(GoToTarget mobile)
+  public void RegisterMobile(GoToTarget mobile)
   {
     movingElements.Add(mobile);
   }

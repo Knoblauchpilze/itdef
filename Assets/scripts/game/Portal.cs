@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Portal : MonoBehaviour, IPointerDownHandler
+public class Portal : MonoBehaviour
 {
   private Vector3 spawnCenter;
   private Timer waveTimer;
@@ -37,12 +36,6 @@ public class Portal : MonoBehaviour, IPointerDownHandler
     }
   }
 
-  public void OnPointerDown(PointerEventData eventData)
-  {
-    // https://discussions.unity.com/t/mouse-cursor-position-relative-to-the-object/144907
-    Debug.Log("event: " + eventData.button + " at " + eventData.pointerCurrentRaycast.worldPosition);
-  }
-
   public void Configure(PortalConfiguration inConfig)
   {
     config = inConfig;
@@ -68,6 +61,9 @@ public class Portal : MonoBehaviour, IPointerDownHandler
 
     var enemy = Instantiate(enemyPrefab, pos, enemyPrefab.transform.rotation);
     ConfigureEnemy(enemy);
+
+    var mobile = enemy.GetComponent<GoToTarget>();
+    config.router.RegisterMobile(mobile);
   }
 
   void ConfigureEnemy(GameObject enemy)
@@ -77,7 +73,7 @@ public class Portal : MonoBehaviour, IPointerDownHandler
     var motionConf = new MotionConfiguration();
     motionConf.target = baseToDestroy;
     motionConf.speed = config.waveConf.enemyConf.GetEnemySpeed();
-    motionConf.locator = config.locator;
+    motionConf.locator = config.router;
 
     behavior.Configure(motionConf);
 

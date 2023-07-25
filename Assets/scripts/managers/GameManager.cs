@@ -6,11 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
   private int lives;
-  private List<Portal> portals;
-  private GameMap gameMap = new GameMap();
 
   public TextMeshProUGUI livesText;
-  public TextMeshProUGUI waveTimerText;
   public TextMeshProUGUI stateButtonText;
 
   public GameObject gameScreen;
@@ -19,9 +16,6 @@ public class GameManager : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    GetAndConfigurePortals();
-    GetAndConfigureWalls();
-
     lives = GameStateData.LivesFromDifficulty();
 
     gameScreen.gameObject.SetActive(true);
@@ -33,78 +27,6 @@ public class GameManager : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    var minRemainingTime = float.MaxValue;
-    foreach (Portal portal in portals)
-    {
-      var remainingTimeInSeconds = portal.TimeToNextWave();
-      if (remainingTimeInSeconds < minRemainingTime)
-      {
-        minRemainingTime = remainingTimeInSeconds;
-      }
-    }
-
-    var secondsRemaining = Mathf.FloorToInt(minRemainingTime);
-    waveTimerText.SetText("Time: " + secondsRemaining + "s");
-  }
-
-  void GetAndConfigurePortals()
-  {
-    portals = new List<Portal>();
-
-    var rawPortals = GameObject.FindGameObjectsWithTag("portal");
-    foreach (GameObject rawPortal in rawPortals)
-    {
-      var portal = rawPortal.GetComponent<Portal>();
-      portal.Configure(GeneratePortalConfiguration(GameStateData.difficulty));
-
-      portals.Add(portal);
-      gameMap.AddPortal(portal, VectorUtils.ConvertTo2d(rawPortal.gameObject.transform.position));
-    }
-  }
-
-  void GetAndConfigureWalls()
-  {
-    var rawWalls = GameObject.FindGameObjectsWithTag("wall");
-    foreach (GameObject rawWall in rawWalls)
-    {
-      gameMap.AddWall(VectorUtils.ConvertTo2d(rawWall.gameObject.transform.position));
-    }
-  }
-
-  PortalConfiguration GeneratePortalConfiguration(Difficulty difficulty)
-  {
-    var conf = new PortalConfiguration();
-    conf.waveConf = GenerateWaveConfiguration(difficulty);
-
-    conf.spawnIntervalInSeconds = 20.0f;
-    conf.destroyOnArrivalGracePeriod = 2.0f;
-
-    conf.locator = gameMap;
-
-    return conf;
-  }
-
-  WaveConfiguration GenerateWaveConfiguration(Difficulty difficulty)
-  {
-    var conf = new WaveConfiguration();
-    conf.enemyConf = GenerateEnemyConfiguration(difficulty);
-
-    conf.minCount = 1;
-    conf.maxCount = 1;
-
-    return conf;
-  }
-
-  EnemyConfiguration GenerateEnemyConfiguration(Difficulty difficulty)
-  {
-    var conf = new EnemyConfiguration();
-    conf.minHealth = 1;
-    conf.maxHealth = 1;
-
-    conf.minSpeed = 1;
-    conf.maxSpeed = 1;
-
-    return conf;
   }
 
   void UpdateUi()
@@ -148,18 +70,5 @@ public class GameManager : MonoBehaviour
   public void SetupTitleMenuScreen()
   {
     SceneManager.LoadScene("main_menu");
-  }
-
-  public void TriggerNextWave()
-  {
-    foreach (Portal portal in portals)
-    {
-      portal.SpawnEnemyWave();
-    }
-  }
-
-  public void SpawnBuilding(Building building, Vector2Int pos)
-  {
-    gameMap.InvalidatePaths();
   }
 }

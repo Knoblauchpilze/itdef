@@ -5,37 +5,36 @@ public class BuildManager : MonoBehaviour
 {
   private bool hasBuilding = false;
   private Building buildingToBuild;
+  private GameObject buildingPrefab;
   private float gold;
-  private GameManager gameManager;
+  private MapManager mapManager;
   public TextMeshProUGUI goldText;
 
   void Start()
   {
     gold = GameStateData.GoldFromDifficulty();
-    gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
 
     UpdateUi();
   }
 
   void Update()
   {
-    // https://forum.unity.com/threads/onmousedown-for-right-click.7131/
-    if (Input.GetMouseButtonUp(0))
+  }
+
+  public void SpawnBuildingRequest(Vector2Int pos, float groundLevel)
+  {
+    if (hasBuilding)
     {
-      // https://docs.unity3d.com/ScriptReference/Input-mousePosition.html
-      // https://discussions.unity.com/t/mouse-cursor-position-relative-to-the-object/144907
-      Debug.Log("clicked at " + Input.mousePosition);
+      mapManager.SpawnBuilding(buildingToBuild, buildingPrefab, pos, groundLevel);
     }
   }
 
-  public void SetBuildingToBuild(Building bToBuild)
+  public void SetBuildingToBuild(Building type, GameObject prefab)
   {
-    buildingToBuild = bToBuild;
+    buildingToBuild = type;
+    buildingPrefab = prefab;
     hasBuilding = true;
-    if (hasBuilding)
-    {
-      Debug.Log("building is now " + buildingToBuild);
-    }
   }
 
   public void EnemyKilled(int reward)

@@ -85,6 +85,16 @@ public class Path
     return points.Count == 0;
   }
 
+  public Vector2Int Peek()
+  {
+    if (Empty())
+    {
+      throw new ArgumentOutOfRangeException("Failed to advance on empty path");
+    }
+
+    return points[0];
+  }
+
   public Vector2Int Advance()
   {
     if (Empty())

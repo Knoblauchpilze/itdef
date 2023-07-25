@@ -9,6 +9,7 @@ public class BuildingButton : MonoBehaviour
   private BuildManager buildManager;
 
   public Building building;
+  public GameObject buildingPrefab;
 
   // Start is called before the first frame update
   void Start()
@@ -26,6 +27,6 @@ public class BuildingButton : MonoBehaviour
 
   void SetBuilding()
   {
-    buildManager.SetBuildingToBuild(building);
+    buildManager.SetBuildingToBuild(building, buildingPrefab);
   }
 }

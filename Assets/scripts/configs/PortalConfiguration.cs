@@ -6,7 +6,7 @@ public struct PortalConfiguration
   public WaveConfiguration waveConf;
   public float spawnIntervalInSeconds;
   public float destroyOnArrivalGracePeriod;
-  public Locator locator;
+  public Router router;
 
   public Vector3 GenerateSpawnPosition(Vector3 o)
   {
