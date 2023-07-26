@@ -1,5 +1,6 @@
 
 public enum Building
 {
-  Wall
+  Wall,
+  Tower
 }

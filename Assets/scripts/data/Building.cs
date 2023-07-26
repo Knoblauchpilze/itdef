@@ -7,6 +7,8 @@ public static class BuildingCost
     {
       case Building.Wall:
         return 10;
+      case Building.Tower:
+        return 20;
     }
 
     return 0;

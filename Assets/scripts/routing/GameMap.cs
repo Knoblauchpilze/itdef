@@ -22,6 +22,11 @@ public class GameMap : Router
     }
   }
 
+  public void AddTower(Vector2Int pos)
+  {
+    usedCoordinates.Add(Node.Hash(pos));
+  }
+
   public void AddWall(Vector2Int pos)
   {
     usedCoordinates.Add(Node.Hash(pos));

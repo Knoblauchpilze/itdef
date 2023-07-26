@@ -49,6 +49,9 @@ public class MapManager : MonoBehaviour
       case Building.Wall:
         gameMap.AddWall(pos);
         break;
+      case Building.Tower:
+        gameMap.AddTower(pos);
+        break;
     }
 
     Debug.Log("Spawned " + type + " at " + pos);
