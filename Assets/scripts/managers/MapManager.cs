@@ -24,7 +24,7 @@ public class MapManager : MonoBehaviour
     foreach (GameObject rawPortal in rawPortals)
     {
       var portal = rawPortal.GetComponent<Portal>();
-      gameMap.AddPortal(portal, VectorUtils.ConvertTo2dIntTile(rawPortal.gameObject.transform.position));
+      gameMap.AddPortal(VectorUtils.ConvertTo2dIntTile(rawPortal.gameObject.transform.position));
     }
   }
 

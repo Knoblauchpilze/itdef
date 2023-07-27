@@ -5,7 +5,6 @@ using UnityEngine;
 // https://www.w3schools.com/cs/cs_interface.php
 public class GameMap : Router
 {
-  private List<Portal> portals = new List<Portal>();
   private HashSet<string> usedCoordinates = new HashSet<string>();
   private List<GoToTarget> movingElements = new List<GoToTarget>();
 
@@ -14,12 +13,14 @@ public class GameMap : Router
     return usedCoordinates.Contains(Node.Hash(pos));
   }
 
-  public void AddPortal(Portal portal, Vector2Int pos)
+  public bool WouldObstaclePreventPath(Vector2Int start, Vector2Int end, Vector2Int obstacle)
   {
-    if (usedCoordinates.Add(Node.Hash(pos)))
-    {
-      portals.Add(portal);
-    }
+    return false;
+  }
+
+  public void AddPortal(Vector2Int pos)
+  {
+    usedCoordinates.Add(Node.Hash(pos));
   }
 
   public void AddTower(Vector2Int pos)
