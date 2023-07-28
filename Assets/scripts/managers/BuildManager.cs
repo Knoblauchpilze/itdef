@@ -9,7 +9,7 @@ public class BuildManager : MonoBehaviour
   private GameObject buildingPrefab;
   private float gold;
   private MapManager mapManager;
-  private List<Portal> portals = new List<Portal>();
+  private List<GameObject> portals = new List<GameObject>();
   private List<GameObject> bases = new List<GameObject>();
 
   public TextMeshProUGUI goldText;
@@ -34,8 +34,7 @@ public class BuildManager : MonoBehaviour
     var rawPortals = GameObject.FindGameObjectsWithTag("portal");
     foreach (GameObject rawPortal in rawPortals)
     {
-      var portal = rawPortal.GetComponent<Portal>();
-      portals.Add(portal);
+      portals.Add(rawPortal);
     }
   }
 
@@ -69,7 +68,22 @@ public class BuildManager : MonoBehaviour
 
   bool AllPortalsAndBasesStillConnected(Vector2Int pos)
   {
-    return false;
+    var router = mapManager.GetRouter();
+    foreach (GameObject portal in portals)
+    {
+      var start = VectorUtils.ConvertTo2dIntTile(portal.transform.position);
+      foreach (GameObject aBase in bases)
+      {
+        var end = VectorUtils.ConvertTo2dIntTile(aBase.transform.position);
+        if (router.WouldObstaclePreventPath(start, end, pos, mapManager.GetXRange(), mapManager.GetYRange()))
+        {
+          Debug.Log("Obstacle at " + pos + " would prevent path from " + start + " to " + end);
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   void SpawnBuildingAndPay(Vector2Int pos, float groundLevel)

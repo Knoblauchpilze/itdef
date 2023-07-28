@@ -106,7 +106,12 @@ public class GoToTarget : MonoBehaviour
     var end = VectorUtils.ConvertTo2dIntTile(config.target.transform.position);
 
     AStar astar = new AStar(start, end, config.locator);
-    path = astar.FindUnboundedPath();
+    path = astar.FindPathWithin(config.xRange.x, config.xRange.y, config.yRange.x, config.yRange.y);
+    if (path == null)
+    {
+      path = new Path();
+    }
+
     Debug.Log("Generated path with size " + path.Size());
   }
 

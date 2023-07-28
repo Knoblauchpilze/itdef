@@ -1,5 +1,35 @@
 using UnityEngine;
 
+class AstarSettings
+{
+  public bool hasBounds = false;
+  public Vector2Int xRange;
+  public Vector2Int yRange;
+  public bool hasRadius = false;
+  public float radius;
+
+  public bool ShouldConsiderNode(Node node)
+  {
+    if (!hasBounds)
+    {
+      return true;
+    }
+
+    var pos = node.Pos();
+    if (pos.x < xRange.x || pos.x > xRange.y)
+    {
+      return false;
+    }
+    if (pos.y < yRange.x || pos.y > yRange.y)
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+}
+
 public class AStar
 {
   private Vector2Int start;
@@ -13,12 +43,17 @@ public class AStar
     locator = loc;
   }
 
-  public Path FindUnboundedPath()
+  public Path FindPathWithin(int minX, int maxX, int minY, int maxY)
   {
-    return FindPath(-1.0f);
+    var settings = new AstarSettings();
+    settings.hasBounds = true;
+    settings.xRange = new Vector2Int(minX, maxX);
+    settings.yRange = new Vector2Int(minY, maxY);
+
+    return FindPath(settings);
   }
 
-  Path FindPath(float radius)
+  Path FindPath(AstarSettings settings)
   {
     Path outPath;
 
@@ -31,7 +66,7 @@ public class AStar
 
       if (current.Contains(end))
       {
-        if (!Reconstruct(nodes, radius, out outPath))
+        if (!Reconstruct(nodes, settings, out outPath))
         {
           return null;
         }
@@ -49,7 +84,7 @@ public class AStar
           continue;
         }
 
-        if (radius > 0.0f && Vector2Int.Distance(start, neighbor.Pos()) >= radius)
+        if (!settings.ShouldConsiderNode(neighbor))
         {
           continue;
         }
@@ -61,7 +96,7 @@ public class AStar
     return null;
   }
 
-  bool Reconstruct(AStarNodes nodes, float radius, out Path path)
+  bool Reconstruct(AStarNodes nodes, AstarSettings settings, out Path path)
   {
     path = null;
     Path outPath = nodes.Reconstruct(end);
@@ -72,7 +107,7 @@ public class AStar
       return false;
     }
 
-    if (PathTooFar(outPath, start, radius))
+    if (PathTooFar(outPath, start, settings))
     {
       return false;
     }
@@ -83,11 +118,11 @@ public class AStar
     return true;
   }
 
-  bool PathTooFar(Path path, Vector2Int p, float d)
+  bool PathTooFar(Path path, Vector2Int p, AstarSettings settings)
   {
     // In case the `radius` is negative, consider
     // that there's no limit.
-    if (d < 0.0f)
+    if (!settings.hasRadius)
     {
       return false;
     }
@@ -97,7 +132,7 @@ public class AStar
 
     while (id < path.Size() && bounded)
     {
-      bounded = (Vector2Int.Distance(p, path.At(id)) > d);
+      bounded = (Vector2Int.Distance(p, path.At(id)) > settings.radius);
       ++id;
     }
 

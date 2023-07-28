@@ -13,9 +13,21 @@ public class GameMap : Router
     return usedCoordinates.Contains(Node.Hash(pos));
   }
 
-  public bool WouldObstaclePreventPath(Vector2Int start, Vector2Int end, Vector2Int obstacle)
+  public bool WouldObstaclePreventPath(Vector2Int start, Vector2Int end, Vector2Int obstacle, Vector2Int xRange, Vector2Int yRange)
   {
-    return false;
+    if (usedCoordinates.Contains(Node.Hash(obstacle)))
+    {
+      return false;
+    }
+
+    usedCoordinates.Add(Node.Hash(obstacle));
+
+    AStar astar = new AStar(start, end, this);
+    var path = astar.FindPathWithin(xRange.x, xRange.y, yRange.x, yRange.y);
+
+    usedCoordinates.Remove(Node.Hash(obstacle));
+
+    return path == null || path.Empty();
   }
 
   public void AddPortal(Vector2Int pos)

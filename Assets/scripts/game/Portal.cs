@@ -7,6 +7,7 @@ public class Portal : MonoBehaviour
   private Vector3 spawnCenter;
   private Timer waveTimer;
   private PortalConfiguration config;
+  private MapManager mapManager;
 
   public GameObject enemyPrefab;
   public GameObject baseToDestroy;
@@ -18,6 +19,8 @@ public class Portal : MonoBehaviour
     spawnCenter = boxCollider.transform.position;
 
     baseToDestroy = GameObject.Find("Base");
+
+    mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
   }
 
   // Update is called once per frame
@@ -74,6 +77,8 @@ public class Portal : MonoBehaviour
     motionConf.target = baseToDestroy;
     motionConf.speed = config.waveConf.enemyConf.GetEnemySpeed();
     motionConf.locator = config.router;
+    motionConf.xRange = mapManager.GetXRange();
+    motionConf.yRange = mapManager.GetYRange();
 
     behavior.Configure(motionConf);
 
