@@ -12,7 +12,7 @@ Incrementally create a top down open world tower defense by adding features litt
 * ✅ there is at least one type of mob
 * there is at least one type of tower to attack mobs
 * ✅ there are walls to prevent the passage of mobs
-* walls can't be placed so that they cut off the base from portals
+* ✅ walls can't be placed so that they cut off the base from portals
 * ✅ the player can only place towers and walls on a grid
 * ✅ mobs are following a path following the grid
 * ✅ the player loses when no lives are left
