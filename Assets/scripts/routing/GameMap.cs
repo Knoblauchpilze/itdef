@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // https://www.w3schools.com/cs/cs_interface.php
-public class GameMap : Router
+public class GameMap : Router, Finder
 {
   private HashSet<string> usedCoordinates = new HashSet<string>();
   private List<GoToTarget> movingElements = new List<GoToTarget>();
@@ -11,6 +11,11 @@ public class GameMap : Router
   public bool Obstructed(Vector2Int pos)
   {
     return usedCoordinates.Contains(Node.Hash(pos));
+  }
+
+  public void RegisterMobile(GoToTarget mobile)
+  {
+    movingElements.Add(mobile);
   }
 
   public bool WouldObstaclePreventPath(Vector2Int start, Vector2Int end, Vector2Int obstacle, Vector2Int xRange, Vector2Int yRange)
@@ -30,6 +35,11 @@ public class GameMap : Router
     return path == null || path.Empty();
   }
 
+  public List<Vector2Int> FindAllWithinRadius(Vector2Int pos, float radius)
+  {
+    return new List<Vector2Int>();
+  }
+
   public void AddPortal(Vector2Int pos)
   {
     usedCoordinates.Add(Node.Hash(pos));
@@ -43,11 +53,6 @@ public class GameMap : Router
   public void AddWall(Vector2Int pos)
   {
     usedCoordinates.Add(Node.Hash(pos));
-  }
-
-  public void RegisterMobile(GoToTarget mobile)
-  {
-    movingElements.Add(mobile);
   }
 
   public void InvalidatePaths()

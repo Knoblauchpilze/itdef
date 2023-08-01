@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TowerManager : MonoBehaviour
+{
+  // Start is called before the first frame update
+  void Start()
+  {
+
+  }
+
+  // Update is called once per frame
+  void Update()
+  {
+
+  }
+
+  public void RegisterTower(GameObject tower)
+  {
+    var towerConf = new TowerConfiguration();
+    towerConf.damage = TowerProperties.Damage();
+    towerConf.reloadTime = TowerProperties.ReloadTimeInSeconds();
+
+    var script = tower.GetComponent<Tower>();
+    script.Configure(towerConf);
+  }
+}

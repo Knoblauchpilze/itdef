@@ -7,6 +7,8 @@ public struct EnemyConfiguration
   public int maxHealth;
   public float minSpeed;
   public float maxSpeed;
+  public int reward;
+
 
   public int GetEnemyHealth()
   {

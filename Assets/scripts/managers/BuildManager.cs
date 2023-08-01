@@ -9,6 +9,7 @@ public class BuildManager : MonoBehaviour
   private GameObject buildingPrefab;
   private float gold;
   private MapManager mapManager;
+  private TowerManager towerManager;
   private List<GameObject> portals = new List<GameObject>();
   private List<GameObject> bases = new List<GameObject>();
 
@@ -18,6 +19,7 @@ public class BuildManager : MonoBehaviour
   {
     gold = GameStateData.GoldFromDifficulty();
     mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+    towerManager = GameObject.Find("TowerManager").GetComponent<TowerManager>();
 
     GetAndRegisterPortals();
     GetAndRegisterBases();
@@ -88,11 +90,14 @@ public class BuildManager : MonoBehaviour
 
   void SpawnBuildingAndPay(Vector2Int pos, float groundLevel)
   {
-    var spawned = mapManager.SpawnBuilding(buildingToBuild, buildingPrefab, pos, groundLevel);
+    GameObject instantiated = null;
+    var spawned = mapManager.SpawnBuilding(buildingToBuild, buildingPrefab, pos, groundLevel, out instantiated);
     if (!spawned)
     {
       return;
     }
+
+    towerManager.RegisterTower(instantiated);
 
     gold -= BuildingCost.Get(buildingToBuild);
     UpdateUi();

@@ -88,6 +88,14 @@ public class Portal : MonoBehaviour
     threatConf.destroyOnArrivalGracePeriod = config.destroyOnArrivalGracePeriod;
 
     threat.Configure(threatConf);
+
+    Mob mob = enemy.GetComponent<Mob>();
+
+    var mobConf = new MobConfiguration();
+    mobConf.health = config.waveConf.enemyConf.GetEnemyHealth();
+    mobConf.reward = config.waveConf.enemyConf.reward;
+
+    mob.Configure(mobConf);
   }
 
   public float TimeToNextWave()

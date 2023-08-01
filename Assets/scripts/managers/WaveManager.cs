@@ -80,6 +80,8 @@ public class WaveManager : MonoBehaviour
     conf.minSpeed = 1;
     conf.maxSpeed = 1;
 
+    conf.reward = EnemyReward.Get();
+
     return conf;
   }
 

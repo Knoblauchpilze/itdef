@@ -23,7 +23,7 @@ public static class GameStateData
     switch (GameStateData.difficulty)
     {
       case Difficulty.Easy:
-        return 1;
+        return 2;
       case Difficulty.Medium:
         return 20;
       case Difficulty.Hard:

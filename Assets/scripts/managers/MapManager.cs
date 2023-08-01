@@ -47,8 +47,11 @@ public class MapManager : MonoBehaviour
     }
   }
 
-  public bool SpawnBuilding(Building type, GameObject prefab, Vector2Int pos, float groundLevel)
+  // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/out-parameter-modifier
+  public bool SpawnBuilding(Building type, GameObject prefab, Vector2Int pos, float groundLevel, out GameObject instantiated)
   {
+    instantiated = null;
+
     if (gameMap.Obstructed(pos))
     {
       return false;
@@ -67,7 +70,7 @@ public class MapManager : MonoBehaviour
     Debug.Log("Spawned " + type + " at " + pos);
 
     var pos3d = VectorUtils.ConvertTo3dFloat(pos, groundLevel);
-    Instantiate(prefab, pos3d, prefab.transform.rotation);
+    instantiated = Instantiate(prefab, pos3d, prefab.transform.rotation);
 
     gameMap.InvalidatePaths();
 
