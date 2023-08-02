@@ -55,7 +55,7 @@ public class WaveManager : MonoBehaviour
     conf.spawnIntervalInSeconds = 20.0f;
     conf.destroyOnArrivalGracePeriod = 2.0f;
 
-    conf.router = mapManager.GetRouter();
+    conf.pathManager = mapManager.GetPathManager();
 
     return conf;
   }

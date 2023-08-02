@@ -66,7 +66,7 @@ public class Portal : MonoBehaviour
     ConfigureEnemy(enemy);
 
     var mobile = enemy.GetComponent<GoToTarget>();
-    config.router.RegisterMobile(mobile);
+    config.pathManager.RegisterMobile(mobile);
   }
 
   void ConfigureEnemy(GameObject enemy)
@@ -76,7 +76,7 @@ public class Portal : MonoBehaviour
     var motionConf = new MotionConfiguration();
     motionConf.target = baseToDestroy;
     motionConf.speed = config.waveConf.enemyConf.GetEnemySpeed();
-    motionConf.locator = config.router;
+    motionConf.pathManager = config.pathManager;
     motionConf.xRange = mapManager.GetXRange();
     motionConf.yRange = mapManager.GetYRange();
 

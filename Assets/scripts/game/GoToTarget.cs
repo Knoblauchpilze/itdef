@@ -39,6 +39,11 @@ public class GoToTarget : MonoBehaviour
     transform.Translate(delta * dir);
   }
 
+  void OnDestroy()
+  {
+    config.pathManager.UnregisterMobile(this);
+  }
+
   void OnTriggerEnter(Collider other)
   {
     if (other.gameObject == config.target)
@@ -105,7 +110,7 @@ public class GoToTarget : MonoBehaviour
     var start = GetCurrentPosition();
     var end = VectorUtils.ConvertTo2dIntTile(config.target.transform.position);
 
-    AStar astar = new AStar(start, end, config.locator);
+    AStar astar = new AStar(start, end, config.pathManager);
     path = astar.FindPathWithin(config.xRange.x, config.xRange.y, config.yRange.x, config.yRange.y);
     if (path == null)
     {
@@ -122,11 +127,7 @@ public class GoToTarget : MonoBehaviour
       return;
     }
 
-    Debug.Log("Arrived within " + ARRIVAL_THRESHOLD + " of " + currentTarget + " (pos: " + gameObject.transform.position + "), moving to next target");
-
     var target = path.Advance();
     currentTarget = VectorUtils.ConvertTo3dFloat(target, config.target.transform.position.z);
-
-    Debug.Log("Picked next target " + currentTarget);
   }
 }

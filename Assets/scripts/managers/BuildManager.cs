@@ -70,14 +70,14 @@ public class BuildManager : MonoBehaviour
 
   bool AllPortalsAndBasesStillConnected(Vector2Int pos)
   {
-    var router = mapManager.GetRouter();
+    var pathManager = mapManager.GetPathManager();
     foreach (GameObject portal in portals)
     {
       var start = VectorUtils.ConvertTo2dIntTile(portal.transform.position);
       foreach (GameObject aBase in bases)
       {
         var end = VectorUtils.ConvertTo2dIntTile(aBase.transform.position);
-        if (router.WouldObstaclePreventPath(start, end, pos, mapManager.GetXRange(), mapManager.GetYRange()))
+        if (pathManager.WouldObstaclePreventPath(start, end, pos, mapManager.GetXRange(), mapManager.GetYRange()))
         {
           Debug.Log("Obstacle at " + pos + " would prevent path from " + start + " to " + end);
           return false;
@@ -97,7 +97,10 @@ public class BuildManager : MonoBehaviour
       return;
     }
 
-    towerManager.RegisterTower(instantiated);
+    if (buildingToBuild == Building.Tower)
+    {
+      towerManager.RegisterTower(instantiated);
+    }
 
     gold -= BuildingCost.Get(buildingToBuild);
     UpdateUi();

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // https://www.w3schools.com/cs/cs_interface.php
-public class GameMap : Router, Finder
+public class GameMap : PathManager, Finder
 {
-  private HashSet<string> usedCoordinates = new HashSet<string>();
+  // https://www.shekhali.com/csharp-hashtable-vs-dictionary-vs-hashset/
+  private Dictionary<string, GameObject> usedCoordinates = new Dictionary<string, GameObject>();
   private List<GoToTarget> movingElements = new List<GoToTarget>();
 
   public bool Obstructed(Vector2Int pos)
   {
-    return usedCoordinates.Contains(Node.Hash(pos));
+    return usedCoordinates.ContainsKey(Node.Hash(pos));
   }
 
   public void RegisterMobile(GoToTarget mobile)
@@ -18,14 +19,20 @@ public class GameMap : Router, Finder
     movingElements.Add(mobile);
   }
 
+  public void UnregisterMobile(GoToTarget mobile)
+  {
+    Debug.Log("Unregistering mobile");
+    movingElements.Remove(mobile);
+  }
+
   public bool WouldObstaclePreventPath(Vector2Int start, Vector2Int end, Vector2Int obstacle, Vector2Int xRange, Vector2Int yRange)
   {
-    if (usedCoordinates.Contains(Node.Hash(obstacle)))
+    if (usedCoordinates.ContainsKey(Node.Hash(obstacle)))
     {
       return false;
     }
 
-    usedCoordinates.Add(Node.Hash(obstacle));
+    usedCoordinates.Add(Node.Hash(obstacle), null);
 
     AStar astar = new AStar(start, end, this);
     var path = astar.FindPathWithin(xRange.x, xRange.y, yRange.x, yRange.y);
@@ -40,23 +47,24 @@ public class GameMap : Router, Finder
     return new List<Vector2Int>();
   }
 
-  public void AddPortal(Vector2Int pos)
+  public void AddPortal(Vector2Int pos, GameObject entity)
   {
-    usedCoordinates.Add(Node.Hash(pos));
+    usedCoordinates.Add(Node.Hash(pos), entity);
   }
 
-  public void AddTower(Vector2Int pos)
+  public void AddTower(Vector2Int pos, GameObject entity)
   {
-    usedCoordinates.Add(Node.Hash(pos));
+    usedCoordinates.Add(Node.Hash(pos), entity);
   }
 
-  public void AddWall(Vector2Int pos)
+  public void AddWall(Vector2Int pos, GameObject entity)
   {
-    usedCoordinates.Add(Node.Hash(pos));
+    usedCoordinates.Add(Node.Hash(pos), entity);
   }
 
   public void InvalidatePaths()
   {
+    Debug.Log("Invalidating for " + movingElements.Count);
     foreach (GoToTarget mobile in movingElements)
     {
       mobile.InvalidatePath();

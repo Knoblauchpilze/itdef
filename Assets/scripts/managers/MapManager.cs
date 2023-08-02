@@ -34,7 +34,8 @@ public class MapManager : MonoBehaviour
     foreach (GameObject rawPortal in rawPortals)
     {
       var portal = rawPortal.GetComponent<Portal>();
-      gameMap.AddPortal(VectorUtils.ConvertTo2dIntTile(rawPortal.gameObject.transform.position));
+      var pos = VectorUtils.ConvertTo2dIntTile(rawPortal.gameObject.transform.position);
+      gameMap.AddPortal(pos, rawPortal);
     }
   }
 
@@ -43,7 +44,8 @@ public class MapManager : MonoBehaviour
     var rawWalls = GameObject.FindGameObjectsWithTag("wall");
     foreach (GameObject rawWall in rawWalls)
     {
-      gameMap.AddWall(VectorUtils.ConvertTo2dIntTile(rawWall.gameObject.transform.position));
+      var pos = VectorUtils.ConvertTo2dIntTile(rawWall.gameObject.transform.position);
+      gameMap.AddWall(pos, rawWall);
     }
   }
 
@@ -57,27 +59,27 @@ public class MapManager : MonoBehaviour
       return false;
     }
 
-    switch (type)
-    {
-      case Building.Wall:
-        gameMap.AddWall(pos);
-        break;
-      case Building.Tower:
-        gameMap.AddTower(pos);
-        break;
-    }
-
     Debug.Log("Spawned " + type + " at " + pos);
 
     var pos3d = VectorUtils.ConvertTo3dFloat(pos, groundLevel);
     instantiated = Instantiate(prefab, pos3d, prefab.transform.rotation);
+
+    switch (type)
+    {
+      case Building.Wall:
+        gameMap.AddWall(pos, instantiated);
+        break;
+      case Building.Tower:
+        gameMap.AddTower(pos, instantiated);
+        break;
+    }
 
     gameMap.InvalidatePaths();
 
     return true;
   }
 
-  public Router GetRouter()
+  public PathManager GetPathManager()
   {
     return gameMap;
   }
