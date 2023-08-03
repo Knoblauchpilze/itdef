@@ -41,7 +41,7 @@ public class GoToTarget : MonoBehaviour
 
   void OnDestroy()
   {
-    config.pathManager.UnregisterMobile(this);
+    config.pathManager.UnregisterMobile(gameObject);
   }
 
   void OnTriggerEnter(Collider other)

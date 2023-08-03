@@ -84,6 +84,11 @@ public class MapManager : MonoBehaviour
     return gameMap;
   }
 
+  public Finder GetFinder()
+  {
+    return gameMap;
+  }
+
   public Vector2Int GetXRange()
   {
     return xRange;

@@ -65,8 +65,7 @@ public class Portal : MonoBehaviour
     var enemy = Instantiate(enemyPrefab, pos, enemyPrefab.transform.rotation);
     ConfigureEnemy(enemy);
 
-    var mobile = enemy.GetComponent<GoToTarget>();
-    config.pathManager.RegisterMobile(mobile);
+    config.pathManager.RegisterMobile(enemy);
   }
 
   void ConfigureEnemy(GameObject enemy)

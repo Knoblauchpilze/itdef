@@ -6,10 +6,12 @@ public class Tower : MonoBehaviour
 {
   private TowerConfiguration config;
   private Timer attackTimer;
+  private Vector2Int pos;
 
   // Start is called before the first frame update
   void Start()
   {
+    pos = VectorUtils.ConvertTo2dIntTile(gameObject.transform.position);
   }
 
   // Update is called once per frame
@@ -24,7 +26,6 @@ public class Tower : MonoBehaviour
     if (ready)
     {
       TryToAttack();
-      Debug.Log("Should attack");
     }
   }
 
@@ -36,6 +37,22 @@ public class Tower : MonoBehaviour
 
   void TryToAttack()
   {
+    var enemy = config.finder.FindClosestWithinRadius(pos, config.range);
+    if (enemy == null)
+    {
+      return;
+    }
+
+    AttackEnemy(enemy);
+
     attackTimer.Reset();
+  }
+
+  void AttackEnemy(GameObject enemy)
+  {
+    var ePos = VectorUtils.ConvertTo2dFloat(enemy.transform.position);
+    var cPos = VectorUtils.ConvertTo2dFloat(gameObject.transform.position);
+    var d = Vector2.Distance(ePos, cPos);
+    Debug.Log("Should attack " + ePos + " (r: " + enemy.transform.position + ") at " + d + " from " + pos + " (r: " + cPos + ")");
   }
 }
