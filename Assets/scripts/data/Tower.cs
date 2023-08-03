@@ -7,6 +7,11 @@ public static class TowerProperties
     return 1.1f;
   }
 
+  public static float Range()
+  {
+    return 2.0f;
+  }
+
   public static float ReloadTimeInSeconds()
   {
     return 1.5f;

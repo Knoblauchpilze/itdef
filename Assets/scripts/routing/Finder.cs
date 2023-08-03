@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface Finder
 {
-  List<Vector2Int> FindAllWithinRadius(Vector2Int pos, float radius);
+  List<GameObject> FindAllWithinRadius(Vector2Int pos, float radius);
 }

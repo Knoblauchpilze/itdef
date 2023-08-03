@@ -20,6 +20,7 @@ public class TowerManager : MonoBehaviour
   {
     var towerConf = new TowerConfiguration();
     towerConf.damage = TowerProperties.Damage();
+    towerConf.range = TowerProperties.Range();
     towerConf.reloadTime = TowerProperties.ReloadTimeInSeconds();
 
     var script = tower.GetComponent<Tower>();

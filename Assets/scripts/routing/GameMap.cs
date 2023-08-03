@@ -42,9 +42,22 @@ public class GameMap : PathManager, Finder
     return path == null || path.Empty();
   }
 
-  public List<Vector2Int> FindAllWithinRadius(Vector2Int pos, float radius)
+  public List<GameObject> FindAllWithinRadius(Vector2Int pos, float radius)
   {
-    return new List<Vector2Int>();
+    var objects = new List<GameObject>();
+
+    // https://stackoverflow.com/questions/141088/how-to-iterate-over-a-dictionary
+    foreach (var entry in usedCoordinates)
+    {
+      var coord = Node.Unhash(entry.Key);
+      var delta = Vector2Int.Distance(pos, coord);
+      if (delta <= radius)
+      {
+        objects.Add(entry.Value);
+      }
+    }
+
+    return objects;
   }
 
   public void AddPortal(Vector2Int pos, GameObject entity)
