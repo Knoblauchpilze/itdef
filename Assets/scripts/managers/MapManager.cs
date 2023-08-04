@@ -11,7 +11,7 @@ public class MapManager : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    var ground = GameObject.Find("Ground");
+    var ground = GameObject.FindWithTag("ground");
     var collider = ground.GetComponent<MeshCollider>();
     var minGround = collider.bounds.min;
     var maxGround = collider.bounds.max;
