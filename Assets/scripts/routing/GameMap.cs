@@ -50,7 +50,7 @@ public class GameMap : PathManager, Finder
 
     usedCoordinates.Add(Node.Hash(obstacle), null);
 
-    AStar astar = new AStar(start, end, this);
+    AStar astar = new(start, end, this);
     var path = astar.FindPathWithin(xRange.x, xRange.y, yRange.x, yRange.y);
 
     usedCoordinates.Remove(Node.Hash(obstacle));
@@ -129,10 +129,7 @@ public class GameMap : PathManager, Finder
     Debug.Log("Invalidating for " + movingElements.Count);
     foreach (MovingElement mobile in movingElements)
     {
-      if (mobile.behavior != null)
-      {
-        mobile.behavior.InvalidatePath();
-      }
+      mobile.behavior?.InvalidatePath();
     }
   }
 }

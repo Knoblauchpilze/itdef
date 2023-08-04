@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-  private GameMap gameMap = new GameMap();
+  private readonly GameMap gameMap = new();
   private Vector2Int xRange;
   private Vector2Int yRange;
 
