@@ -9,6 +9,7 @@ public class GoToTarget : MonoBehaviour
   private bool reachedBase;
   private Threat threat;
   private Path path = new Path();
+  private bool hasTarget = false;
   private Vector3 currentTarget;
 
   private float ARRIVAL_THRESHOLD = 0.005f;
@@ -25,6 +26,11 @@ public class GoToTarget : MonoBehaviour
   void Update()
   {
     if (GameStateData.state != State.Play)
+    {
+      return;
+    }
+
+    if (reachedBase && CurrentTargetIsReached())
     {
       return;
     }
@@ -70,7 +76,7 @@ public class GoToTarget : MonoBehaviour
 
   void UpdateTarget()
   {
-    if (!path.Empty() && !CurrentTargetIsReached())
+    if (hasTarget && !CurrentTargetIsReached())
     {
       return;
     }
@@ -129,5 +135,6 @@ public class GoToTarget : MonoBehaviour
 
     var target = path.Advance();
     currentTarget = VectorUtils.ConvertTo3dFloat(target, config.target.transform.position.z);
+    hasTarget = true;
   }
 }
