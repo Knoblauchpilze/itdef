@@ -38,4 +38,10 @@ public class Mob : MonoBehaviour
     config = inConfig;
     health = config.health;
   }
+
+  public void Damage(float damage)
+  {
+    health -= damage;
+    Debug.Log("Mob took " + damage + " damage, " + health + " hp left");
+  }
 }

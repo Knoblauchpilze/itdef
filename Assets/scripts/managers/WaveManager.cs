@@ -75,7 +75,7 @@ public class WaveManager : MonoBehaviour
   {
     var conf = new EnemyConfiguration();
     conf.minHealth = 1;
-    conf.maxHealth = 1;
+    conf.maxHealth = 2.3;
 
     conf.minSpeed = 1;
     conf.maxSpeed = 1;

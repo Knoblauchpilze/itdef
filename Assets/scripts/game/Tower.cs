@@ -50,9 +50,7 @@ public class Tower : MonoBehaviour
 
   void AttackEnemy(GameObject enemy)
   {
-    var ePos = VectorUtils.ConvertTo2dFloat(enemy.transform.position);
-    var cPos = VectorUtils.ConvertTo2dFloat(gameObject.transform.position);
-    var d = Vector2.Distance(ePos, cPos);
-    Debug.Log("Should attack " + ePos + " (r: " + enemy.transform.position + ") at " + d + " from " + pos + " (r: " + cPos + ")");
+    var mob = enemy.GetComponent<Mob>();
+    mob.Damage(config.damage);
   }
 }
